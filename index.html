@@ -3,73 +3,56 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Animal Pet | Dashboards 2025</title>
+  <title>Animal Pet | Dashboards</title>
   <style>
-    :root{
-      --bg:#0b0f19; --card:rgba(255,255,255,.06); --text:rgba(255,255,255,.92);
-      --muted:rgba(255,255,255,.65); --border:rgba(255,255,255,.12);
-    }
     body{
-      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-      background: radial-gradient(1200px 800px at 20% 10%, rgba(124,58,237,0.28), transparent 55%),
-                  radial-gradient(900px 600px at 85% 20%, rgba(34,197,94,0.18), transparent 55%),
-                  radial-gradient(900px 600px at 55% 85%, rgba(245,158,11,0.14), transparent 55%),
-                  var(--bg);
-      color:var(--text);
-      display:flex; align-items:center; justify-content:center; min-height:100vh;
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      background:#0b0f19;
+      color:#fff;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh
     }
-    .wrap{ width:min(920px, 92vw); }
-    .head{
-      padding:18px 18px 10px;
-      border:1px solid var(--border);
-      background:rgba(0,0,0,.22);
-      border-radius:18px;
-      backdrop-filter: blur(8px);
+    .box{
+      width:min(820px,92vw);
+      padding:18px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:16px;
+      background:rgba(255,255,255,.06)
     }
-    h1{ margin:0; font-size:18px; }
-    p{ margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.4; }
-    .grid{ margin-top:12px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-    a.card{
-      text-decoration:none; color:var(--text);
-      background:var(--card); border:1px solid var(--border);
-      border-radius:18px; padding:16px;
-      display:flex; flex-direction:column; gap:8px;
-      transition: transform .08s ease;
+    h1{margin:0 0 8px;font-size:18px}
+    p{margin:0 0 14px;color:rgba(255,255,255,.65);font-size:13px;line-height:1.4}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    a{
+      display:block;
+      text-decoration:none;
+      color:#fff;
+      padding:14px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:16px;
+      background:rgba(255,255,255,.05)
     }
-    a.card:hover{ transform: translateY(-2px); }
-    .title{ font-weight:900; }
-    .desc{ color:var(--muted); font-size:13px; line-height:1.4; }
-    .tag{
-      align-self:flex-start;
-      font-size:11px; font-weight:800;
-      color:rgba(255,255,255,.78);
-      border:1px solid var(--border);
-      padding:4px 8px;
-      border-radius:999px;
-      background:rgba(255,255,255,.04);
-    }
-    .foot{ margin-top:10px; color:var(--muted); font-size:12px; }
-    @media (max-width:760px){ .grid{ grid-template-columns:1fr; } }
+    a:hover{transform:translateY(-1px)}
+    .t{font-weight:800;margin-bottom:6px}
+    .d{color:rgba(255,255,255,.65);font-size:13px;line-height:1.4}
+    @media(max-width:720px){.grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="head">
-      <h1>Animal Pet | Dashboards 2025</h1>
-      <p>Selecione o painel que deseja visualizar. Conteúdo preparado para suporte à decisão executiva e acompanhamento de liderança.</p>
-      <div class="grid">
-        <a class="card" href="./lideranca/">
-          <span class="tag">Liderança</span>
-          <div class="title">Dashboard de Liderança</div>
-          <div class="desc">Maturidade e habilidades de gestores, filtros e visão consolidada para direcionar desenvolvimento e prioridades.</div>
-        </a>
-        <a class="card" href="./decisao/">
-          <span class="tag">Decisão</span>
-          <div class="title">Dashboard Executivo 2024–2025</div>
-          <div class="desc">Unidade Ricardo Jafet. KPIs, mix de receita, top grupos, eficiência e ranking de produtividade com comparação A vs B.</div>
-        </a>
-      </div>
-      <div class="foot">Acesso por link público (GitHub Pages). Uso interno: habilite “Mostrar nomes” quando necessário.</div>
+  <div class="box">
+    <h1>Animal Pet | Dashboards</h1>
+    <p>Selecione o painel para visualização. Conteúdo preparado para suporte à decisão executiva.</p>
+    <div class="grid">
+      <a href="./lideranca/">
+        <div class="t">Dashboard de Liderança</div>
+        <div class="d">Habilidades e maturidade dos gestores.</div>
+      </a>
+      <a href="./decisao/">
+        <div class="t">Dashboard Executivo 2024–2025</div>
+        <div class="d">KPIs, mix de receita, eficiência e produtividade (Ricardo Jafet).</div>
+      </a>
     </div>
   </div>
 </body>
