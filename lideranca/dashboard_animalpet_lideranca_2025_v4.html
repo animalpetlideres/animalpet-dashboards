@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Consultoria em Gestão e Liderança AnimalPet 2025 – Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card: rgba(255,255,255,0.06);
+      --card2: rgba(255,255,255,0.08);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.65);
+      --border: rgba(255,255,255,0.12);
+    }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: radial-gradient(1200px 800px at 20% 10%, rgba(124,58,237,0.28), transparent 55%),
+                  radial-gradient(900px 600px at 85% 20%, rgba(34,197,94,0.18), transparent 55%),
+                  radial-gradient(900px 600px at 55% 85%, rgba(245,158,11,0.14), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+    }
+    header {
+      padding: 22px 18px 10px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(0,0,0,0.20);
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(8px);
+      z-index: 10;
+    }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 14px 28px; }
+    .title { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    h1 { font-size: 18px; margin: 0; letter-spacing: 0.2px; }
+    .meta { font-size: 12px; color: var(--muted); }
+    .filters { display: grid; grid-template-columns: repeat(12, 1fr); gap: 10px; margin-top: 14px; }
+    .field { grid-column: span 4; background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 10px 12px; }
+    .field label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+    select { width: 100%; background: rgba(0,0,0,0.25); color: var(--text); border: 1px solid var(--border);
+             border-radius: 10px; padding: 10px 10px; font-size: 13px; outline: none; }
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; margin-top: 14px; }
+    .card { grid-column: span 3; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 14px; min-height: 78px; }
+    .kpi-title { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+    .kpi-value { font-size: 22px; font-weight: 650; letter-spacing: 0.2px; }
+    .kpi-sub { font-size: 12px; color: var(--muted); margin-top: 6px; }
+    .panel { grid-column: span 6; background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+             padding: 12px 14px 10px; min-height: 360px; }
+    .panel h2 { font-size: 13px; margin: 0 0 10px; color: rgba(255,255,255,0.88); font-weight: 650; }
+    .panel canvas { width: 100% !important; height: 300px !important; display: block; }
+    .table-panel { grid-column: span 12; background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+                   padding: 12px 14px 6px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 10px 8px; border-bottom: 1px solid rgba(255,255,255,0.08); text-align: left; vertical-align: middle; }
+    th { font-size: 11px; color: var(--muted); font-weight: 650; letter-spacing: 0.25px; text-transform: uppercase; }
+    .pill { display: inline-flex; align-items: center; justify-content: center; min-width: 26px; padding: 4px 8px;
+            border-radius: 999px; font-weight: 650; border: 1px solid rgba(255,255,255,0.14); background: var(--card2); }
+    .pill.good { background: rgba(34,197,94,0.18); border-color: rgba(34,197,94,0.35); }
+    .pill.mid  { background: rgba(245,158,11,0.18); border-color: rgba(245,158,11,0.35); }
+    .pill.bad  { background: rgba(239,68,68,0.18); border-color: rgba(239,68,68,0.35); }
+    .right { text-align: right; }
+    .muted { color: var(--muted); font-size: 12px; }
+    @media (max-width: 980px) {
+      .card { grid-column: span 6; }
+      .panel { grid-column: span 12; }
+      .field { grid-column: span 12; }
+      header { position: static; }
+      .panel canvas { height: 280px !important; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="title">
+      <h1>Consultoria em Gestão e Liderança AnimalPet 2025</h1>
+      <div class="meta">Atualizado em 19 de dezembro de 2025</div>
+    </div>
+    <div class="filters">
+      <div class="field">
+        <label>Unidade</label>
+        <select id="fUnidade"></select>
+      </div>
+      <div class="field">
+        <label>Setor</label>
+        <select id="fSetor"></select>
+      </div>
+      <div class="field">
+        <label>Gestor</label>
+        <select id="fGestor"></select>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="grid" id="kpis"></section>
+
+  <section class="grid">
+    <div class="panel">
+      <h2>Perfil médio de habilidades (Radar)</h2>
+      <canvas id="radar"></canvas>
+      <div class="muted">Escala 1–5. Mostra a média das habilidades na seleção atual.</div>
+    </div>
+    <div class="panel">
+      <h2>Média geral por gestor (Barras)</h2>
+      <canvas id="bars"></canvas>
+      <div class="muted">Ordenado do maior para o menor, conforme filtros selecionados.</div>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="table-panel">
+      <h2 style="margin:0 0 10px; font-size:13px; font-weight:650;">Matriz de maturidade (1–5)</h2>
+      <div class="muted" style="margin-bottom:10px;">Use os filtros acima para comparar por unidade, setor e gestor.</div>
+      <div style="overflow:auto;">
+        <table id="tbl"></table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const DATA = [{"Unidade": "Ricardo Jafet", "Nome do Gestor": "Thaís Nascimento da Silva", "Setor": "Recepção", "Comunicacao": 3, "Senso de Dono": 2, "Resolução de Conflitos": 3, "Organização": 3, "Liderança": 3, "Data": "2025-12-02", "Média Geral": 2.8, "Ano": 2025, "Atualizado em": "19/12/2025"}, {"Unidade": "Sacomã", "Nome do Gestor": "Marcela de Campos Gomes Moiceichuka", "Setor": "Internação", "Comunicacao": 2, "Senso de Dono": 2, "Resolução de Conflitos": 1, "Organização": 3, "Liderança": 3, "Data": "2025-12-05", "Média Geral": 2.2, "Ano": 2025, "Atualizado em": "19/12/2025"}, {"Unidade": "Sacomã", "Nome do Gestor": "Marina Nunes de Souza", "Setor": "Recepção", "Comunicacao": 3, "Senso de Dono": 3, "Resolução de Conflitos": 3, "Organização": 3, "Liderança": 2, "Data": "2025-11-26", "Média Geral": 2.8, "Ano": 2025, "Atualizado em": "19/12/2025"}, {"Unidade": "Jabaquara", "Nome do Gestor": "Jéssica Torres Machado", "Setor": "Coordenadora Operacional", "Comunicacao": 4, "Senso de Dono": 3, "Resolução de Conflitos": 4, "Organização": 4, "Liderança": 2, "Data": "2025-11-26", "Média Geral": 3.4, "Ano": 2025, "Atualizado em": "19/12/2025"}, {"Unidade": "Sacomã", "Nome do Gestor": "Fernanda Françoso", "Setor": "Clínica", "Comunicacao": 4, "Senso de Dono": 4, "Resolução de Conflitos": 3, "Organização": 3, "Liderança": 2, "Data": "2025-12-05", "Média Geral": 3.2, "Ano": 2025, "Atualizado em": "19/12/2025"}, {"Unidade": "Ricardo Jafet", "Nome do Gestor": "Kátya Priscilla Leite Simi", "Setor": "Internação", "Comunicacao": 3, "Senso de Dono": 3, "Resolução de Conflitos": 2, "Organização": 2, "Liderança": 2, "Data": "2025-12-03", "Média Geral": 2.4, "Ano": 2025, "Atualizado em": "19/12/2025"}, {"Unidade": "Sacomã", "Nome do Gestor": "Matheus Henrique Pereira da Silva", "Setor": "Comercial", "Comunicacao": 4, "Senso de Dono": 2, "Resolução de Conflitos": 3, "Organização": 4, "Liderança": 2, "Data": "2025-12-05", "Média Geral": 3.0, "Ano": 2025, "Atualizado em": "19/12/2025"}, {"Unidade": "Ricardo Jafet", "Nome do Gestor": "Raquel Braga Gesteira", "Setor": "Clínica", "Comunicacao": 4, "Senso de Dono": 2, "Resolução de Conflitos": 2, "Organização": 2, "Liderança": 2, "Data": "2025-11-26", "Média Geral": 2.4, "Ano": 2025, "Atualizado em": "19/12/2025"}, {"Unidade": "Sacomã", "Nome do Gestor": "Ana Paula Messias Leite", "Setor": "Gestão Geral", "Comunicacao": 4, "Senso de Dono": 5, "Resolução de Conflitos": 4, "Organização": 3, "Liderança": 4, "Data": "2025-12-03", "Média Geral": 4.0, "Ano": 2025, "Atualizado em": "19/12/2025"}, {"Unidade": "Jabaquara", "Nome do Gestor": "Ana Paula Messias Leite", "Setor": "Gestão Geral", "Comunicacao": 4, "Senso de Dono": 5, "Resolução de Conflitos": 4, "Organização": 3, "Liderança": 4, "Data": "2025-12-03", "Média Geral": 4.0, "Ano": 2025, "Atualizado em": "19/12/2025"}, {"Unidade": "Cursino", "Nome do Gestor": "Ana Paula Messias Leite", "Setor": "Gestão Geral", "Comunicacao": 4, "Senso de Dono": 5, "Resolução de Conflitos": 4, "Organização": 3, "Liderança": 4, "Data": "2025-12-03", "Média Geral": 4.0, "Ano": 2025, "Atualizado em": "19/12/2025"}, {"Unidade": "Ricardo Jafet", "Nome do Gestor": "Ana Paula Messias Leite", "Setor": "Gestão Geral", "Comunicacao": 4, "Senso de Dono": 5, "Resolução de Conflitos": 4, "Organização": 3, "Liderança": 4, "Data": "2025-12-03", "Média Geral": 4.0, "Ano": 2025, "Atualizado em": "19/12/2025"}];
+const UNITS = ["Geral","Sacomã","Jabaquara","Cursino","Ricardo Jafet"];
+const SKILLS = [
+  {key:"Comunicacao", label:"Comunicação e Alinhamento"},
+  {key:"Senso de Dono", label:"Responsabilidade e Senso de Dono"},
+  {key:"Resolução de Conflitos", label:"Gestão Emocional e Conflitos"},
+  {key:"Organização", label:"Organização e Priorização"},
+  {key:"Liderança", label:"Liderança e Influência"}
+];
+
+function uniq(arr){ return [...new Set(arr)].filter(x => x!==null && x!==undefined && String(x).trim()!==""); }
+function byId(id){ return document.getElementById(id); }
+
+function setUnitOptions(){
+  const sel = byId("fUnidade");
+  sel.innerHTML = "";
+  UNITS.forEach(v=>{
+    const o = document.createElement("option");
+    o.value = v; o.textContent = v;
+    sel.appendChild(o);
+  });
+}
+
+function setOptionsAll(sel, values, allLabel){
+  sel.innerHTML = "";
+  const all = document.createElement("option");
+  all.value = "__ALL__";
+  all.textContent = allLabel;
+  sel.appendChild(all);
+  values.forEach(v=>{
+    const o = document.createElement("option");
+    o.value = v; o.textContent = v;
+    sel.appendChild(o);
+  });
+}
+
+function applyFilters(){
+  const u = byId("fUnidade").value;
+  const s = byId("fSetor").value;
+  const g = byId("fGestor").value;
+
+  return DATA.filter(r=>{
+    let okU = true;
+    if(u==="Geral"){
+      okU = ["Sacomã","Jabaquara","Cursino","Ricardo Jafet"].includes(r["Unidade"]);
+    } else {
+      okU = (r["Unidade"]===u);
+    }
+    const okS = (s==="__ALL__") || (r["Setor"]===s);
+    const okG = (g==="__ALL__") || (r["Nome do Gestor"]===g);
+    return okU && okS && okG;
+  });
+}
+
+function mean(nums){
+  const xs = nums.filter(x=>Number.isFinite(x));
+  if(xs.length===0) return null;
+  return xs.reduce((a,b)=>a+b,0)/xs.length;
+}
+function fmt(n, d=2){ if(n===null || !Number.isFinite(n)) return "-"; return n.toFixed(d); }
+function pillClass(v){ if(v>=4) return "good"; if(v>=3) return "mid"; return "bad"; }
+
+function buildKpis(rows){
+  const k = byId("kpis");
+  k.innerHTML = "";
+
+  const avgOverall = mean(rows.map(r=>Number(r["Média Geral"]))) ?? 0;
+
+  const skillMeans = SKILLS.map(s=>({
+    label: s.label,
+    val: mean(rows.map(r=>Number(r[s.key]))) ?? 0
+  })).sort((a,b)=>b.val-a.val);
+
+  const strong = skillMeans[0] || {label:"-", val:0};
+  const weak = skillMeans[skillMeans.length-1] || {label:"-", val:0};
+
+  const pctAbove4 = rows.length ? (rows.filter(r=>Number(r["Média Geral"])>=4).length / rows.length * 100) : 0;
+  const pctBelow3 = rows.length ? (rows.filter(r=>Number(r["Média Geral"])<3).length / rows.length * 100) : 0;
+
+  const cards = [
+    {t:"Média geral (seleção)", v: fmt(avgOverall,2), s:`Base: ${rows.length} líder(es)`},
+    {t:"Habilidade mais forte", v: fmt(strong.val,2), s: strong.label},
+    {t:"Maior oportunidade", v: fmt(weak.val,2), s: weak.label},
+    {t:"% líderes ≥ 4,0", v: fmt(pctAbove4,0)+"%", s:"Média geral por líder"},
+    {t:"% líderes < 3,0", v: fmt(pctBelow3,0)+"%", s:"Média geral por líder"},
+    {t:"Cobertura (unidades)", v: uniq(rows.map(r=>r["Unidade"])).length, s:"Sacomã / Jabaquara / Cursino / Ricardo Jafet"}
+  ];
+
+  cards.forEach(c=>{
+    const el = document.createElement("div");
+    el.className = "card";
+    el.innerHTML = `
+      <div class="kpi-title">${c.t}</div>
+      <div class="kpi-value">${c.v}</div>
+      <div class="kpi-sub">${c.s}</div>
+    `;
+    k.appendChild(el);
+  });
+}
+
+let radarChart = null;
+let barChart = null;
+
+function buildRadar(rows){
+  const labels = SKILLS.map(s=>s.label);
+  const values = SKILLS.map(s=>mean(rows.map(r=>Number(r[s.key]))) ?? 0);
+
+  const canvas = byId("radar");
+  if(radarChart) radarChart.destroy();
+
+  radarChart = new Chart(canvas, {
+    type: "radar",
+    data: {
+      labels,
+      datasets: [{
+        label: "Média",
+        data: values,
+        fill: true,
+        borderWidth: 2,
+        pointRadius: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: false,
+      elements: { line: { tension: 0 } },
+      scales: {
+        r: {
+          min: 0,
+          max: 5,
+          ticks: { stepSize: 1, backdropColor: "transparent", color: "rgba(255,255,255,0.65)" },
+          grid: { color: "rgba(255,255,255,0.10)" },
+          angleLines: { color: "rgba(255,255,255,0.10)" },
+          pointLabels: { color: "rgba(255,255,255,0.80)", font: { size: 11 } }
+        }
+      },
+      plugins: { legend: { display: false } }
+    }
+  });
+}
+
+function buildBars(rows){
+  const grouped = {};
+  rows.forEach(r=>{
+    const key = r["Nome do Gestor"];
+    grouped[key] = grouped[key] ?? [];
+    grouped[key].push(Number(r["Média Geral"]));
+  });
+
+  const items = Object.entries(grouped).map(([k,v])=>({
+    name: k,
+    avg: mean(v) ?? 0
+  })).sort((a,b)=>b.avg-a.avg);
+
+  const labels = items.map(i=>i.name);
+  const values = items.map(i=>i.avg);
+
+  const canvas = byId("bars");
+  if(barChart) barChart.destroy();
+
+  barChart = new Chart(canvas, {
+    type: "bar",
+    data: { labels, datasets: [{ label: "Média geral", data: values, borderWidth: 1 }] },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: "rgba(255,255,255,0.75)", maxRotation: 45, minRotation: 0 }, grid: { display: false } },
+        y: { min: 0, max: 5, ticks: { stepSize: 1, color: "rgba(255,255,255,0.65)" }, grid: { color: "rgba(255,255,255,0.10)" } }
+      }
+    }
+  });
+}
+
+function buildTable(rows){
+  const tbl = byId("tbl");
+  const header = `
+    <tr>
+      <th>Unidade</th>
+      <th>Gestor</th>
+      <th>Setor</th>
+      ${SKILLS.map(s=>`<th class="right">${s.label}</th>`).join("")}
+      <th class="right">Média</th>
+      <th>Data</th>
+    </tr>`;
+  const body = rows.map(r=>{
+    const cells = SKILLS.map(s=>{
+      const v = Number(r[s.key]);
+      const cls = pillClass(v);
+      return `<td class="right"><span class="pill ${cls}">${Number.isFinite(v) ? v : "-"}</span></td>`;
+    }).join("");
+    const mg = Number(r["Média Geral"]);
+    const mcls = pillClass(mg);
+    return `
+      <tr>
+        <td>${r["Unidade"]}</td>
+        <td>${r["Nome do Gestor"]}</td>
+        <td>${r["Setor"]}</td>
+        ${cells}
+        <td class="right"><span class="pill ${mcls}">${Number.isFinite(mg) ? mg.toFixed(2) : "-"}</span></td>
+        <td class="muted">${r["Data"] || "-"}</td>
+      </tr>`;
+  }).join("");
+
+  tbl.innerHTML = header + body;
+}
+
+function refresh(){
+  const unit = byId("fUnidade").value;
+
+  const scopeRows = DATA.filter(r=>{
+    if(unit==="Geral") return ["Sacomã","Jabaquara","Cursino","Ricardo Jafet"].includes(r["Unidade"]);
+    return r["Unidade"]===unit;
+  });
+
+  const setorSel = byId("fSetor").value;
+  const gestorSel = byId("fGestor").value;
+
+  setOptionsAll(byId("fSetor"), uniq(scopeRows.map(r=>r["Setor"])).sort((a,b)=>a.localeCompare(b)), "Todos os setores");
+  setOptionsAll(byId("fGestor"), uniq(scopeRows.map(r=>r["Nome do Gestor"])).sort((a,b)=>a.localeCompare(b)), "Todos os gestores");
+
+  if([...byId("fSetor").options].some(o=>o.value===setorSel)) byId("fSetor").value = setorSel; else byId("fSetor").value="__ALL__";
+  if([...byId("fGestor").options].some(o=>o.value===gestorSel)) byId("fGestor").value = gestorSel; else byId("fGestor").value="__ALL__";
+
+  const rows = applyFilters();
+  buildKpis(rows);
+  buildRadar(rows);
+  buildBars(rows);
+  buildTable(rows);
+}
+
+function init(){
+  setUnitOptions();
+  byId("fUnidade").value = "Geral";
+
+  setOptionsAll(byId("fSetor"), uniq(DATA.map(r=>r["Setor"])).sort((a,b)=>a.localeCompare(b)), "Todos os setores");
+  setOptionsAll(byId("fGestor"), uniq(DATA.map(r=>r["Nome do Gestor"])).sort((a,b)=>a.localeCompare(b)), "Todos os gestores");
+
+  byId("fUnidade").addEventListener("change", ()=>{
+    byId("fSetor").value="__ALL__";
+    byId("fGestor").value="__ALL__";
+    refresh();
+  });
+  byId("fSetor").addEventListener("change", refresh);
+  byId("fGestor").addEventListener("change", refresh);
+
+  refresh();
+}
+
+init();
+</script>
+</body>
+</html>
